@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import Pusher from 'pusher';
 import cors from 'cors';
 import Messages from './dbMessages.js';
+import path from 'path';
 
 // app config
 const app = express();
@@ -91,6 +92,17 @@ app.get('/messages/sync', (req, resp) => {
         }
     })
 })
+
+//serve static assets 
+if (process.env.NODE_ENV === 'production') {
+    //set static floder
+
+    app.use(express.static('whatsapp-clone/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirmane, 'whatsapp-clone', 'build', 'index.html'));
+    })
+}
 
 //listenners
 app.listen(port, () => console.log(`Listening on localhost:${port}`));
